@@ -5,7 +5,7 @@ _env_secrets_load() {
   local backend
   if [[ -n "$ENV_SECRETS_BACKEND" ]]; then
     # Check that requesting backend is supported
-    if [[ " ${arr[@]} " != *" $ENV_SECRETS_BACKEND "* ]]; then
+    if (( ! ${backends[(Ie)$ENV_SECRETS_BACKEND]} )); then
       echo "zsh-env-secrets: unsupported backend: '$ENV_SECRETS_BACKEND'" >&2
       return
     fi
@@ -19,13 +19,19 @@ _env_secrets_load() {
     done
   fi
 
-  [[ -z "$ENV_SECRETS_BACKEND" ]] && return
+  if [[ -z "$ENV_SECRETS_BACKEND" ]]; then
+    echo "zsh-env-secrets: no supported backends found" >&2
+    return
+  fi
 
   local secret env_var secret_path value
   for secret in "${ENV_SECRETS[@]}"; do
     env_var="${secret%%:*}"
-    secret_path="${secret#*:}"
-    [[ "$secret" == "$env_var" ]] && secret_path="$env_var"
+    if [[ "$secret" == "$env_var" ]]; then
+      secret_path="$env_var"
+    else
+      secret_path="${secret#*:}"
+    fi
 
     case "$ENV_SECRETS_BACKEND" in
       pass)
@@ -33,8 +39,10 @@ _env_secrets_load() {
       security)
         value=$(security find-generic-password -w -l "$secret_path" 2>/dev/null) ;;
     esac
+
     if [[ -n "$value" ]]; then
-      export "$env_var"="$value"
+      export "$env_var=$value"
+      echo $env_var
     else
       echo "zsh-env-secrets: failed to load secret: '$secret_path'" >&2
     fi
