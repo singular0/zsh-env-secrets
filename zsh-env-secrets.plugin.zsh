@@ -21,7 +21,7 @@ _env_secrets_load() {
 
   [[ -z "$ENV_SECRETS_BACKEND" ]] && return
 
-  local secret env_var secret_path 
+  local secret env_var secret_path value
   for secret in "${ENV_SECRETS[@]}"; do
     env_var="${secret%%:*}"
     secret_path="${secret#*:}"
