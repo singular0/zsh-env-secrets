@@ -88,7 +88,7 @@ ENV_SECRETS_BACKEND="pass"
 
 ## License
 
-MIT License - see LICENSE file for details.
+GNU GPLv3 - see [LICENSE](LICENSE) file for details.
 
 ## Changelog
 
