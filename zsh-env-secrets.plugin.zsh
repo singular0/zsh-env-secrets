@@ -6,7 +6,7 @@ _env_secrets_load() {
   if [[ -n "$ENV_SECRETS_BACKEND" ]]; then
     # Check that requesting backend is supported
     if (( ! ${backends[(Ie)$ENV_SECRETS_BACKEND]} )); then
-      echo "zsh-env-secrets: unsupported backend: '$ENV_SECRETS_BACKEND'" >&2
+      [[ -z "$ENV_SECRETS_QUIET" ]] && echo "zsh-env-secrets: unsupported backend: '$ENV_SECRETS_BACKEND'" >&2
       return
     fi
   else
@@ -20,7 +20,7 @@ _env_secrets_load() {
   fi
 
   if [[ -z "$ENV_SECRETS_BACKEND" ]]; then
-    echo "zsh-env-secrets: no supported backends found" >&2
+    [[ -z "$ENV_SECRETS_QUIET" ]] && echo "zsh-env-secrets: no supported backends found" >&2
     return
   fi
 
@@ -43,7 +43,7 @@ _env_secrets_load() {
     if [[ -n "$value" ]]; then
       export "$env_var=$value"
     else
-      echo "zsh-env-secrets: failed to load secret: '$secret_path'" >&2
+      [[ -z "$ENV_SECRETS_QUIET" ]] && echo "zsh-env-secrets: failed to load secret: '$secret_path'" >&2
     fi
   done
 }

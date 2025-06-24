@@ -38,6 +38,10 @@ ENV_SECRETS=(
 
 # Optional: specify backend (auto-detected if omitted)
 ENV_SECRETS_BACKEND="pass"
+
+
+# Optional: do not display any error messages
+ENV_SECRETS_QUIET=1
 ```
 
 ### `ENV_SECRETS`
@@ -55,6 +59,10 @@ detect the first available backend from the supported list.
 Supported values:
 - `pass` - The standard Unix password manager
 - `security` - macOS Keychain
+
+### `ENV_SECRETS_QUIET`
+
+**Optional.** If set, no error messages will be displayed.
 
 ## License
 
