@@ -42,7 +42,6 @@ _env_secrets_load() {
 
     if [[ -n "$value" ]]; then
       export "$env_var=$value"
-      echo $env_var
     else
       echo "zsh-env-secrets: failed to load secret: '$secret_path'" >&2
     fi
