@@ -48,5 +48,5 @@ _env_secrets_load() {
   done
 }
 
-[[ -n "$ENV_SECRETS" ]] && _env_secrets_load
+_env_secrets_load
 
